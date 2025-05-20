@@ -1,4 +1,4 @@
-# Launchpad Code Review Tool (LCRT)
+# Launchpad AI Review System (LARS)
 
 A web-based platform built with Next.js to help Launchpad students receive AI-powered feedback on their Python code. Students can submit code snippets or `.py` files and receive structured, rubric-based evaluations without being given full solutions.
 
