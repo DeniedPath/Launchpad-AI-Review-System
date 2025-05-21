@@ -20,7 +20,7 @@ A web-based platform built with Next.js to help Launchpad students receive AI-po
 - **Frontend:** Next.js 14+, TypeScript, Tailwind CSS
 - **Backend:** API Routes (Next.js)
 - **AI Integration:** PlayLab
-- **Database:** TBD (e.g., Supabase, Firebase, or PostgreSQL)
+- **Database:** TBD (e.g., Supabase, Firebase, PostgreSQL, etc)
 - **Auth:** NextAuth.js (or similar)
 
 ---
