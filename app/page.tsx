@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 export default function Home() {
@@ -23,8 +24,8 @@ export default function Home() {
           </div>
           <div className="flex flex-1 justify-end gap-8">
             <div className="flex items-center gap-9">
-              <a className="text-white text-sm font-medium leading-normal" href="#">Dashboard</a>
-              <a className="text-white text-sm font-medium leading-normal" href="#">Log In</a>
+              <Link className="text-white text-sm font-medium leading-normal" href="/pages/dashboard">Dashboard</Link>
+              <Link className="text-white text-sm font-medium leading-normal" href="/pages/login">Admin login</Link>
             </div>
             <button
               className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 bg-[#293038] text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
@@ -58,7 +59,7 @@ export default function Home() {
                   <button
                     className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#1980e6] text-white text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]"
                   >
-                    <span className="truncate">Log In</span>
+                    <Link className="text-white text-sm font-medium leading-normal" href="/pages/dashboard">Get started!</Link>
                   </button>
                 </div>
               </div>
