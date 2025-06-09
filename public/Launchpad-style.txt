@@ -1,0 +1,95 @@
+:root {
+  --primary-cyan: #0faec9;
+  --accent-orange: #f27e34;
+  --accent-green: #8eb651;
+  --dark-gray: #67686a;
+  --light-gray: #b6b7ba;
+  --off-white: #f7f7f7;
+
+  /* Additional colors from palette */
+  --cyan-light: #4bc2d7;
+  --cyan-softer: #87d6e4;
+  --orange-soft: #f59e67;
+  --green-soft: #aac87d;
+  --peach: #f8be99;
+  --lime: #c6daa8;
+  --sky: #c3ebf1;
+  --peach-pale: #fcdfcc;
+  --green-pale: #e3edd3;
+  --blue-deep: #0a8196;
+  --brown: #b45e23;
+  --green-dark: #658639;
+  --gray-medium: #d9d9da;
+  --gray-light: #e8e8e9;
+}
+
+/* Font Imports (Google Fonts alternatives since Archer/Avenir are not free) */
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Playfair+Display:wght@500&display=swap');
+
+/* Font Stack Setup */
+body {
+  font-family: 'Arimo', Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+/* Headings */
+h1 { font-size: 42px; font-weight: 700; font-family: 'Playfair Display', serif; }
+h2 { font-size: 36px; font-weight: 700; font-family: 'Playfair Display', serif; }
+h3 { font-size: 30px; font-weight: 700; font-family: 'Playfair Display', serif; }
+h4 { font-size: 24px; font-weight: 700; font-family: 'Playfair Display', serif; }
+h5 { font-size: 18px; font-weight: 700; font-family: 'Playfair Display', serif; }
+
+/* Body text */
+p {
+  font-size: 15px;
+  font-weight: 400;
+  font-family: 'Arimo', Arial, sans-serif;
+}
+
+
+/**
+ * LOGO USAGE NOTES:
+ * - Use the full-color combination mark on light backgrounds.
+ * - Use the "type only" version on busy images.
+ * - Do not stretch, rotate, recolor, or modify the logo.
+ *
+ * FONT USAGE NOTES:
+ * - Use only Arial (or Arimo as a web-safe alternative).
+ * - Never underline text; it will look like a hyperlink.
+ * - Maintain font sizes in multiples of 3.
+ * - Set line height to 1.3 for body text.
+ */
+
+
+theme: {
+  extend: {
+    colors: {
+      primary: '#0faec9',
+      accent: '#f27e34',
+      green: '#8eb651',
+      gray: {
+        dark: '#67686a',
+        light: '#e8e8e9',
+        default: '#b6b7ba',
+      },
+    },
+    fontFamily: {
+      heading: ['Playfair Display', 'serif'],
+      body: ['Arimo', 'Arial', 'sans-serif'],
+    },
+    fontSize: {
+      'h1': '42px',
+      'h2': '36px',
+      'h3': '30px',
+      'h4': '24px',
+      'h5': '18px',
+      body: '15px',
+    },
+    lineHeight: {
+      snug: '1.3',
+    }
+  }
+}
+
+
