@@ -1,6 +1,11 @@
 import Link from 'next/link';
 import React from 'react';
 
+export const metadata = {
+  title: "Launchpad-AI-Review-System (AIRS)",
+  description: "AI-powered code review and assignment management for Launchpad.",
+};
+
 export default function Home() {
   return (
     <div
@@ -29,7 +34,7 @@ export default function Home() {
               </svg>
             </div>
             <h2 className="text-xl font-bold tracking-tight" style={{ color: '#000000' }}>
-              Launchpad-AI-Review-System (AIRS)
+              Launchpad-AI-Review-System (L-AIRS)
             </h2>
           </div>
           <nav className="flex items-center gap-8">
@@ -48,7 +53,7 @@ export default function Home() {
             style={{ backgroundColor: '#d2e5ea', backgroundImage: 'none' }}
           >
             <h1 className="text-4xl font-bold mb-2" style={{ color: '#0a6377' }}>
-              Welcome to AIRS
+              Welcome to Launchpad-AIRS
             </h1>
             <p className="text-base mb-6" style={{ color: '#444444' }}>
               AI-powered feedback for Python code submissions
