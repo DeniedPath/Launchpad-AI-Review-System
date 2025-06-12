@@ -31,8 +31,8 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { title, description, requirements, creatorId } = body;
-  if (!title || !requirements) {
+  const { title, description, requirements, creatorId, filename } = body;
+  if (!title || !requirements || !filename) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
   // For testing, use a default creatorId if not provided
@@ -45,7 +45,8 @@ export async function POST(req: Request) {
       title,
       description,
       requirements,
-      creatorId: admin,
+      filename,
+      creator: { connect: { id: admin } },
     },
   });
   return NextResponse.json(assignment, { status: 201 });
@@ -62,5 +63,27 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Failed to delete assignment" }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id");
+  if (!id) {
+    return NextResponse.json({ error: "Missing assignment id" }, { status: 400 });
+  }
+  const body = await req.json();
+  const { title, description, requirements, filename } = body;
+  if (!title || !requirements || !filename) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
+  try {
+    const updated = await prisma.assignment.update({
+      where: { id },
+      data: { title, description, requirements, filename },
+    });
+    return NextResponse.json({ assignment: updated });
+  } catch {
+    return NextResponse.json({ error: "Failed to update assignment" }, { status: 500 });
   }
 }

@@ -57,7 +57,6 @@ export default function AdminEditAssignment() {
         body: JSON.stringify({ title, description, requirements, filename }),
       });
       if (!res.ok) throw new Error("Failed to update assignment");
-      alert("Assignment updated successfully!");
       router.push("/pages/admin/manage");
     } catch {
       alert("Error updating assignment.");

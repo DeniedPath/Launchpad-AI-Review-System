@@ -23,7 +23,12 @@ export default function AdminLogin() {
       setError("");
       router.push("/pages/admin/manage");
     } else {
-      setError(res?.error ?? "Invalid credentials");
+      // Show a user-friendly error for CredentialsSignin or any other error
+      const msg =
+        res?.error === "CredentialsSignin" || !res?.error
+          ? "Invalid email or password."
+          : res?.error;
+      setError(msg);
     }
   };
 

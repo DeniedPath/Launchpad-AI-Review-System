@@ -10,14 +10,12 @@ export default function AdminUserManagerClient() {
   const [changeConfirmPassword, setChangeConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  // Remove unused router
-  // const router = useRouter();
 
   // Use a proper type for adminUsers
   type AdminUser = { id: string; email: string };
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState<{ email: string | null }>({ email: null });
+  const [showEdit, setShowEdit] = useState<{ email: string | null }>({ email: null });
 
   // Fetch all admin users on mount
   useEffect(() => {
@@ -59,7 +57,7 @@ export default function AdminUserManagerClient() {
                   <div className="space-x-2">
                     <button
                       className="text-blue-600 hover:underline"
-                      onClick={() => setSelectedUser(user.email)}
+                      onClick={() => setShowEdit({ email: user.email })}
                     >
                       Edit
                     </button>
@@ -81,77 +79,91 @@ export default function AdminUserManagerClient() {
             Create New Admin
           </button>
         </section>
-        {/* Only show edit form if a user is selected */}
-        {selectedUser && (
-          <section className="mb-8">
-            <h3 className="text-lg font-bold mb-2">Edit Admin Password</h3>
-            <div className="mb-2">Editing: <span className="font-mono text-blue-700">{selectedUser}</span></div>
-            <form onSubmit={async (e) => {
-              e.preventDefault();
-              setMessage("");
-              if (changePassword !== changeConfirmPassword) {
-                setMessage("Passwords do not match.");
-                return;
-              }
-              setLoading(true);
-              const res = await fetch("/api/user/password", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: selectedUser, password: changePassword }),
-              });
-              if (res.ok) {
-                setMessage("Password changed successfully.");
-                setChangePassword("");
-                setChangeConfirmPassword("");
-                setSelectedUser(null);
-              } else {
-                const data = await res.json();
-                setMessage(data.error ?? "Failed to change password.");
-              }
-              setLoading(false);
-            }} className="space-y-4">
-              <div>
-                <label htmlFor="edit-password" className="block font-medium mb-1">New Password</label>
-                <input
-                  id="edit-password"
-                  type="password"
-                  value={changePassword}
-                  onChange={(e) => setChangePassword(e.target.value)}
-                  className="w-full border rounded px-3 py-2"
-                  required
-                  placeholder="New password"
-                />
-              </div>
-              <div>
-                <label htmlFor="edit-confirm-password" className="block font-medium mb-1">Confirm New Password</label>
-                <input
-                  id="edit-confirm-password"
-                  type="password"
-                  value={changeConfirmPassword}
-                  onChange={(e) => setChangeConfirmPassword(e.target.value)}
-                  className="w-full border rounded px-3 py-2"
-                  required
-                  placeholder="Confirm new password"
-                />
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  type="submit"
-                  className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded"
-                  disabled={loading}
-                >
-                  {loading ? "Changing..." : "Change Password"}
-                </button>
-                <button
-                  type="button"
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-6 py-2 rounded"
-                  onClick={() => setSelectedUser(null)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </section>
+        {/* Edit Password Modal */}
+        {showEdit.email && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+              <h3 className="text-lg font-bold mb-2">Edit Admin Password</h3>
+              <div className="mb-2">Editing: <span className="font-mono text-blue-700">{showEdit.email}</span></div>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setMessage("");
+                  if (changePassword !== changeConfirmPassword) {
+                    setMessage("Passwords do not match.");
+                    return;
+                  }
+                  setLoading(true);
+                  const res = await fetch("/api/admin-users/password", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: showEdit.email, password: changePassword }),
+                  });
+                  if (res.ok) {
+                    setMessage("Password changed successfully.");
+                    setChangePassword("");
+                    setChangeConfirmPassword("");
+                    setTimeout(() => {
+                      setShowEdit({ email: null });
+                      setMessage("");
+                    }, 1200);
+                  } else {
+                    const data = await res.json();
+                    setMessage(data.error ?? "Failed to change password.");
+                  }
+                  setLoading(false);
+                }}
+                className="space-y-4"
+              >
+                <div>
+                  <label htmlFor="edit-password" className="block font-medium mb-1">New Password</label>
+                  <input
+                    id="edit-password"
+                    type="password"
+                    value={changePassword}
+                    onChange={(e) => setChangePassword(e.target.value)}
+                    className="w-full border rounded px-3 py-2"
+                    required
+                    placeholder="New password"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="edit-confirm-password" className="block font-medium mb-1">Confirm New Password</label>
+                  <input
+                    id="edit-confirm-password"
+                    type="password"
+                    value={changeConfirmPassword}
+                    onChange={(e) => setChangeConfirmPassword(e.target.value)}
+                    className="w-full border rounded px-3 py-2"
+                    required
+                    placeholder="Confirm new password"
+                  />
+                </div>
+                {message && <div className="text-center text-red-600">{message}</div>}
+                <div className="flex space-x-2 justify-end">
+                  <button
+                    type="button"
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-6 py-2 rounded"
+                    onClick={() => {
+                      setShowEdit({ email: null });
+                      setMessage("");
+                      setChangePassword("");
+                      setChangeConfirmPassword("");
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded"
+                    disabled={loading}
+                  >
+                    {loading ? "Changing..." : "Change Password"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         )}
         {/* Confirmation Modal */}
         {showConfirm.email && (

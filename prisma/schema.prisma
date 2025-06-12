@@ -47,6 +47,7 @@ model Assignment {
   submissions  Submission[]
   creatorId    String      // AdminUser.id
   creator      AdminUser   @relation(fields: [creatorId], references: [id])
+  filename     String      // Expected filename for student submission (required)
 }
 
 /// Submission

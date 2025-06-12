@@ -16,12 +16,11 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         const { email, password } = credentials ?? {};
-        if (!email || !password) return null;
-        // Change 'user' to the correct model name as defined in your Prisma schema
+        if (!email || !password) throw new Error("Email and password are required");
         const user = await prisma.adminUser.findUnique({ where: { email } });
-        if (!user) return null;
+        if (!user) throw new Error("Invalid email or password");
         const isValid = await bcrypt.compare(password, user.passwordHash);
-        if (!isValid) return null;
+        if (!isValid) throw new Error("Invalid email or password");
         return { id: user.id, email: user.email };
       },
     }),
