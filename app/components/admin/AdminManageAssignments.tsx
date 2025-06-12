@@ -44,12 +44,15 @@ export default function AdminManageAssignments() {
     <div style={{ minHeight: "100vh", backgroundColor: "#eeeeee", color: "#000000" }}>
       <nav className="flex items-center justify-between px-6 py-3 border-b" style={{ backgroundColor: "#f0f2f5", borderBottomColor: "#0a6377" }}>
         <span className="font-bold text-lg">Launchpad-AI-Review-System (AIRS)</span>
-        <div className="space-x-6">
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
           <Link href="/pages/admin/create" className="hover:underline" style={{ color: "#0faec9" }}>
             Create Assignment
           </Link>
           <Link href="/pages/admin/manage" className="hover:underline" style={{ color: "#0faec9" }}>
             Manage Assignments
+          </Link>
+          <Link href="/pages/admin/user" className="hover:underline font-semibold" style={{ color: "#0a63e0" }}>
+            Admin Users
           </Link>
           <button
             className="hover:underline"

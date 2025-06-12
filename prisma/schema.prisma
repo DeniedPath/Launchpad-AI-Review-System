@@ -1,5 +1,18 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Prisma schema for Launchpad AI Review System (L-AIRS)
+// ------------------------------------------------------
+// This schema defines the database structure for the Launchpad AI Review System.
+// It supports assignment management, student submissions, and admin authentication.
+//
+// Models:
+//   - Assignment: Represents a coding assignment created by an admin.
+//   - Submission: Represents a student's code submission for an assignment.
+//   - AdminUser: Represents an admin user who can manage assignments.
+//
+// For more info: https://pris.ly/d/prisma-schema
+
+// Prisma client generator
+// Generates the Prisma Client JS for database access
+// Docs: https://www.prisma.io/docs/concepts/components/prisma-client
 
 generator client {
   provider = "prisma-client-js"
@@ -10,34 +23,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// Assignment
+/// Represents a coding assignment created by an admin.
+/// Fields:
+///   - id: Unique identifier (UUID)
+///   - title: Assignment title (required)
+///   - requirements: Assignment requirements/instructions (required)
+///   - description: Optional description for students
+///   - rubric: Optional JSON rubric for AI or manual grading
+///   - createdAt: Timestamp when assignment was created
+///   - updatedAt: Timestamp when assignment was last updated
+///   - submissions: List of student submissions for this assignment
+///   - creatorId: Reference to the admin who created the assignment
+///   - creator: Relation to AdminUser
 model Assignment {
-  id          String      @id @default(uuid())
-  title       String
-  requirements String    // Added requirements field
-  description String?
-  rubric      Json?       // Admin-defined rubric
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  submissions Submission[]
-  creatorId   String
-  creator     AdminUser   @relation(fields: [creatorId], references: [id])
+  id           String      @id @default(uuid())
+  title        String      // Assignment title (required)
+  requirements String      // Assignment requirements/instructions (required)
+  description  String?     // Optional description for students
+  rubric       Json?       // Optional JSON rubric for grading
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  submissions  Submission[]
+  creatorId    String      // AdminUser.id
+  creator      AdminUser   @relation(fields: [creatorId], references: [id])
 }
 
+/// Submission
+/// Represents a student's code submission for an assignment.
+/// Fields:
+///   - id: Unique identifier (UUID)
+///   - assignmentId: Reference to the Assignment
+///   - code: The student's submitted code (required)
+///   - feedback: Optional AI-generated feedback
+///   - rating: Optional JSON rubric-based score
+///   - createdAt: Timestamp when submission was created
+///   - assignment: Relation to Assignment
 model Submission {
   id           String     @id @default(uuid())
-  assignmentId String
-  code         String     // Student-submitted code
-  feedback     String?    // AI response
-  rating       Json?      // Rubric-based score
+  assignmentId String     // Assignment.id
+  code         String     // Student-submitted code (required)
+  feedback     String?    // AI-generated feedback (optional)
+  rating       Json?      // Rubric-based score (optional)
   createdAt    DateTime   @default(now())
 
   assignment   Assignment @relation(fields: [assignmentId], references: [id])
 }
 
+/// AdminUser
+/// Represents an admin user who can manage assignments.
+/// Fields:
+///   - id: Unique identifier (UUID)
+///   - email: Unique email address for login
+///   - passwordHash: Hashed password for authentication
+///   - createdAt: Timestamp when admin was created
+///   - assignments: List of assignments created by this admin
 model AdminUser {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  passwordHash String
-  createdAt DateTime @default(now())
+  id          String      @id @default(uuid())
+  email       String      @unique // Admin email (used for login)
+  passwordHash String     // Hashed password
+  createdAt   DateTime    @default(now())
   assignments Assignment[]
 }
