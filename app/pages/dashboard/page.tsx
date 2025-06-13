@@ -20,6 +20,7 @@ export default function StudentDashboard() {
   const [file, setFile] = useState<File | null>(null);
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
+  const [codeError, setCodeError] = useState("");
 
   useEffect(() => {
     const fetchAssignments = async () => {
@@ -36,17 +37,38 @@ export default function StudentDashboard() {
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0] || null;
     setFile(f);
+    setCodeError("");
     if (f) {
+      if (!f.name.endsWith(".py")) {
+        setCodeError("Only .py files are allowed.");
+        setFile(null);
+        setCode("");
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (ev) => setCode(ev.target?.result as string);
       reader.readAsText(f);
     }
   };
 
+  // Heuristic Python code check
+  function isProbablyPython(text: string) {
+    return (
+      /^\s*(def |class |import |from |#|@|print\(|if |for |while |try:|except |with |lambda )/m.test(text) ||
+      /:\s*$/m.test(text)
+    );
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setFeedback("");
+    setCodeError("");
+    if (!file && !isProbablyPython(code)) {
+      setLoading(false);
+      setCodeError("Please paste valid Python code or upload a .py file.");
+      return;
+    }
 
     try {
       const res = await fetch("/api/ai", {
@@ -159,6 +181,7 @@ export default function StudentDashboard() {
               />
             </label>
           </div>
+          {codeError && <div className="text-red-600 text-sm mb-2">{codeError}</div>}
           <button
             type="submit"
             className="font-semibold px-6 py-2 rounded"
