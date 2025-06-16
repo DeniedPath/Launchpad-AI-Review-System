@@ -90,7 +90,7 @@ export default function AdminManageAssignments() {
             {filtered.map((a) => (
               <tr key={a.id} className="border-b">
                 <td className="p-2 border font-medium">{a.title}</td>
-                <td className="p-2 border">{a.createdAt}</td>
+                <td className="p-2 border font-medium">{a.createdAt}</td>
                 <td className="p-2 border">
                   <Link href={`/pages/admin/edit?id=${a.id}`} className="hover:underline mr-3" style={{ color: "#0faec9" }}>
                     Edit
