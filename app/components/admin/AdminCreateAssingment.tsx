@@ -50,7 +50,7 @@ export default function AdminCreateAssignment() {
           <Link href="/pages/admin/manage" className="hover:underline" style={{ color: "#0faec9" }}>
             Manage Assignments
           </Link>
-          <Link href="/pages/admin/user-manager" className="hover:underline" style={{ color: "#0faec9" }}>
+          <Link href="/pages/admin/user" className="hover:underline" style={{ color: "#0faec9" }}>
             Admin Users
           </Link>
           <button

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function AdminUserManagerClient() {
   // Change Password form state
@@ -16,6 +17,8 @@ export default function AdminUserManagerClient() {
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
   const [showConfirm, setShowConfirm] = useState<{ email: string | null }>({ email: null });
   const [showEdit, setShowEdit] = useState<{ email: string | null }>({ email: null });
+
+  const router = useRouter();
 
   // Fetch all admin users on mount
   useEffect(() => {
@@ -74,7 +77,7 @@ export default function AdminUserManagerClient() {
           </ul>
           <button
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded mb-4"
-            onClick={() => window.location.assign('/pages/admin/createuser')}
+            onClick={() => router.push('/pages/admin/createuser')}
           >
             Create New Admin
           </button>
